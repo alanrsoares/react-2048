@@ -1,3 +1,5 @@
+import { compose, reverse } from "ramda";
+
 import { randomInt } from "./utils";
 
 export type Grid = number[][];
@@ -7,12 +9,12 @@ export type Position = { y: number; x: number };
 const maybeReverse = (isReverse: boolean) => (xs: number[]) =>
   isReverse ? xs.reverse() : xs;
 
-const getColumns = (grid: Grid, isReverse: boolean) =>
+const getColumns = (isReverse: boolean) => (grid: Grid) =>
   grid
     .map((row, j) => row.map((_, i) => grid[i][j]))
     .map(maybeReverse(isReverse));
 
-const getRows = (grid: Grid, isReverse: boolean) =>
+const getRows = (isReverse: boolean) => (grid: Grid) =>
   grid.map(maybeReverse(isReverse));
 
 const padLeft = <T>(pad: T[], xs: T[]): T[] =>
@@ -66,19 +68,17 @@ interface Mergers {
 
 const mergers: Mergers = {
   Right: mergeGrid,
-  Left: (grid: Grid) => getRows(mergeGrid(getRows(grid, true)), true),
-  Down: (grid: Grid) => getColumns(mergeGrid(getColumns(grid, false)), false),
-  Up: (grid: Grid) =>
-    getColumns(mergeGrid(getColumns(grid, true)), false).reverse()
+  Left: compose(getRows(true), mergeGrid, getRows(true)),
+  Down: compose(getColumns(false), mergeGrid, getColumns(false)),
+  Up: compose(reverse, getColumns(false), mergeGrid, getColumns(true))
 };
 
 export type Direction = keyof Mergers;
 
 export const merge = (direcion: Direction) => (grid: Grid) => {
-  const merged = mergers[direcion](grid);
+  const merger = mergers[direcion];
+  const merged = merger(grid);
   const zeroes = findZeroes(merged);
-
-  console.log(zeroes);
 
   if (!zeroes.length) {
     console.log("game over");
