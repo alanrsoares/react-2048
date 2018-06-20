@@ -9,7 +9,7 @@ const maybeReverse = (isReverse: boolean) => (xs: number[]) =>
 
 const getColumns = (grid: Grid, isReverse: boolean) =>
   grid
-    .map((row, y) => row.map((_, x) => grid[y][x]))
+    .map((row, j) => row.map((_, i) => grid[i][j]))
     .map(maybeReverse(isReverse));
 
 const getRows = (grid: Grid, isReverse: boolean) =>
