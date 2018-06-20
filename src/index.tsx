@@ -16,12 +16,11 @@ const SEED_GRID: Grid = [
 
 const getDirection = (s: string) => (s.match(/^Arrow(\w+)/) || [])[1];
 
-interface Props {}
 interface State {
   grid: Grid;
 }
 
-class App extends React.Component<Props, State> {
+class App extends React.Component<State> {
   state = {
     grid: SEED_GRID
   };
