@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export type Grid = number[][];
+import { Grid } from "./game";
 
 export default ({ data }: { data: Grid }) => (
   <div className="Grid">

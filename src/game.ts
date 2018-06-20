@@ -1,25 +1,24 @@
-type Grid = number[][];
+import { randomInt } from "./utils";
 
-type Position = { y: number; x: number };
+export type Grid = number[][];
 
-const randomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+export type Position = { y: number; x: number };
 
-const maybeReverse = (reverse: boolean) => (xs: number[]) =>
-  reverse ? xs.reverse() : xs;
+const maybeReverse = (isReverse: boolean) => (xs: number[]) =>
+  isReverse ? xs.reverse() : xs;
 
-const getColumns = (grid: Grid, reverse: boolean) =>
+const getColumns = (grid: Grid, isReverse: boolean) =>
   grid
-    .map((row, j) => row.map((_, i) => grid[i][j]))
-    .map(maybeReverse(reverse));
+    .map((row, y) => row.map((_, x) => grid[y][x]))
+    .map(maybeReverse(isReverse));
 
-const getRows = (grid: Grid, reverse: boolean) =>
-  grid.map(maybeReverse(reverse));
+const getRows = (grid: Grid, isReverse: boolean) =>
+  grid.map(maybeReverse(isReverse));
 
 const padLeft = <T>(pad: T[], xs: T[]): T[] =>
   xs.length < pad.length ? pad.slice(xs.length - pad.length).concat(xs) : xs;
 
-const shiftZeroes = (xs: number[]) =>
+const shiftZeroes = (xs: number[]): number[] =>
   padLeft([0, 0, 0, 0], xs.filter(x => x !== 0));
 
 const mergeRow = (row: number[]) => {

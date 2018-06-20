@@ -2,8 +2,8 @@ import * as React from "react";
 import { render } from "react-dom";
 import { evolve } from "ramda";
 
-import { merge, Direction } from "./game";
-import GridComponent, { Grid } from "./Grid";
+import { merge, Direction, Grid } from "./game";
+import GridComponent from "./Grid";
 
 import "./styles.css";
 
